@@ -8,7 +8,7 @@ body {
 }
 
 .container--narrow {
-    max-width: 732px;
+    max-width: 832px;
 }
 
 .header-search-icon {
@@ -546,4 +546,5 @@ textarea.tall-textarea {
         opacity: 1;
     }
 }
+
 

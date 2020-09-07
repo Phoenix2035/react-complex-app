@@ -1,9 +1,10 @@
-import React from 'react';
+import React from 'react'
+import Page from "./Page"
 
 function HomeGuest() {
     return (
-        <div className="container py-md-5">
-            <div className="row align-items-center">
+        <Page title="Welcome!" wide>
+            <div className="row align-items-center mb-5">
                 <div className="col-lg-7 py-3 py-md-5">
                     <h1 className="display-3">Remember Writing?</h1>
                     <p className="lead text-muted">Are you sick of short tweets and
@@ -41,8 +42,8 @@ function HomeGuest() {
                     </form>
                 </div>
             </div>
-        </div>
-    );
+        </Page>
+    )
 }
 
 export default HomeGuest;
