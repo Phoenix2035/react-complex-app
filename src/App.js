@@ -1,31 +1,35 @@
-import React from 'react';
-import './App.css';
-import {Switch, Route} from "react-router-dom";
+import React, {useState} from 'react'
+import './App.css'
+import {Switch, Route} from "react-router-dom"
 
 // My Components
-import Header from "./Components/Header";
-import HomeGuest from "./Components/HomeGuest";
-import Footer from "./Components/Footer";
-import About from "./Components/About";
-import Terms from "./Components/Terms";
+import Header from "./Components/Header"
+import HomeGuest from "./Components/HomeGuest"
+import Home from "./Components/Home"
+import Footer from "./Components/Footer"
+import About from "./Components/About"
+import Terms from "./Components/Terms"
 
 function App() {
+    const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('complexAppToken'))
+
     return (
         <>
-
-            <Header/>
+            <Header
+                loggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+            />
             <Switch>
                 <Route exact path={'/'}>
-                    <HomeGuest/>
+                    {
+                        loggedIn ? <Home/> : <HomeGuest/>
+                    }
                 </Route>
 
-                <Route path={'/about-us'}>
-                    <About/>
-                </Route>
+                <Route path={'/about-us'} render={props => <About/>}/>
 
-                <Route path={'/terms'}>
-                    <Terms/>
-                </Route>
+                <Route path={'/terms'} render={props => <Terms/>}/>
+
             </Switch>
 
             <Footer/>
