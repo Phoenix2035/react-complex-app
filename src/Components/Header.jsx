@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {Link} from "react-router-dom"
 import HeaderLoggedOut from "./HeaderLoggedOut"
 import HeaderLoggedIn from './HeaderLoggedIn'
+import StateContext from "../Context/StateContext"
 
-function Header({loggedIn, setLoggedIn}) {
+function Header() {
 
+    const appState = useContext(StateContext)
     return (
         <header className="header-bar bg-primary mb-3 pt-2">
             <div className="container d-flex flex-column flex-md-row align-items-center p-3">
@@ -14,8 +16,8 @@ function Header({loggedIn, setLoggedIn}) {
                     </Link>
                 </h4>
                 {
-                    loggedIn ? <HeaderLoggedIn setLoggedIn={setLoggedIn}/> :
-                        <HeaderLoggedOut setLoggedIn={setLoggedIn}/>
+                    appState.loggedIn ? <HeaderLoggedIn/> :
+                        <HeaderLoggedOut/>
                 }
             </div>
         </header>

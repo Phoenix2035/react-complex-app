@@ -1,12 +1,19 @@
-import React from 'react';
+import React, {useContext} from 'react'
+import {Link} from "react-router-dom"
+import DispatchContext from "../Context/DispatchContext"
+import StateContext from "../Context/StateContext"
 
-function HeaderLoggedIn({setLoggedIn}) {
+
+function HeaderLoggedIn() {
+
+    const appDispatch = useContext(DispatchContext)
+    const appState = useContext(StateContext)
 
     const handleLogout = () => {
+        appDispatch({type: 'logout'})
         localStorage.removeItem('complexAppToken')
         localStorage.removeItem('complexAppUsername')
         localStorage.removeItem('complexAppAvatar')
-        setLoggedIn(false)
     }
 
     return (
@@ -20,11 +27,11 @@ function HeaderLoggedIn({setLoggedIn}) {
           </span>
             <a href="#" className="mr-2">
                 <img className="small-header-avatar"
-                     src={localStorage.getItem('complexAppAvatar')} alt="Avatar"/>
+                     src={appState.user.avatar} alt="Avatar"/>
             </a>
-            <a className="btn btn-sm btn-success mr-2" href="/create-post">
+            <Link className="btn btn-sm btn-success mr-2" to="/create-post">
                 Create Post
-            </a>
+            </Link>
             <button
                 onClick={handleLogout}
                 className="btn btn-sm btn-secondary">

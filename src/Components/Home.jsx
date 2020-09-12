@@ -1,18 +1,21 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Page from "./Page"
+import StateContext from "../Context/StateContext";
 
 function Home() {
-   const style ={
+    const style = {
         height: '34rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column'
     }
+
+    const appState = useContext(StateContext)
     return (
         <Page title="Your Feed">
             <div style={style}>
-                <h2 className="text-center">Hello <strong>{localStorage.getItem('complexAppUsername')}</strong>, your
+                <h2 className="text-center">Hello <strong>{appState.user.username}</strong>, your
                     feed
                     is empty.</h2>
                 <p className="lead text-muted text-center">Your feed displays the latest posts from the people you
