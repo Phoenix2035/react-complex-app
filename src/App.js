@@ -16,6 +16,7 @@ import Terms from "./Components/Terms"
 import CreatePost from "./Components/CreatePost"
 import ViewSinglePost from "./Components/ViewSinglePost"
 import FlashMessages from "./Components/FlashMessages"
+import Profile from "./Components/Profile"
 
 
 Axios.defaults.baseURL = 'http://localhost:8080'
@@ -67,6 +68,8 @@ function App() {
                     <FlashMessages messages={state.flashMessages}/>
                     <Header/>
                     <Switch>
+                        <Route path={'/profile/:username'} render={props => <Profile {...props} />}/>
+
                         <Route exact path={'/'}>
                             {
                                 state.loggedIn ? <Home/> : <HomeGuest/>
@@ -80,6 +83,7 @@ function App() {
                         <Route path={'/create-post'} render={props => <CreatePost {...props} />}/>
 
                         <Route path={'/post/:id'} render={props => <ViewSinglePost {...props} />}/>
+
 
                     </Switch>
 
