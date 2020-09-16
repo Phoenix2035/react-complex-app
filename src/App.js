@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {useImmerReducer} from "use-immer";
+import {useImmerReducer} from "use-immer"
 import {BrowserRouter, Switch, Route} from "react-router-dom"
 import Axios from "axios"
 
@@ -17,6 +17,7 @@ import CreatePost from "./Components/CreatePost"
 import ViewSinglePost from "./Components/ViewSinglePost"
 import FlashMessages from "./Components/FlashMessages"
 import Profile from "./Components/Profile"
+import EditPost from "./Components/EditPost"
 
 
 Axios.defaults.baseURL = 'http://localhost:8080'
@@ -82,7 +83,9 @@ function App() {
 
                         <Route path={'/create-post'} render={props => <CreatePost {...props} />}/>
 
-                        <Route path={'/post/:id'} render={props => <ViewSinglePost {...props} />}/>
+                        <Route exact path={'/post/:id'} render={props => <ViewSinglePost {...props} />}/>
+
+                        <Route exact path={'/post/:id/edit'} render={props => <EditPost {...props} />}/>
 
 
                     </Switch>
