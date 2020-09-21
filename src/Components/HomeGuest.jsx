@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import Page from "./Page"
 import Axios from "axios"
+import DispatchContext from "../Context/DispatchContext"
 
 function HomeGuest() {
+    const appDispatch = useContext(DispatchContext)
 
     const [user, setUser] = useState({
         username: '',
@@ -21,14 +23,16 @@ function HomeGuest() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            await Axios.post('/register', {
+            const response = await Axios.post('/register', {
                 username: user.username,
                 email: user.email,
                 password: user.password
             })
-            console.log('user was successfully created')
+            if (response.data) {
+                appDispatch({type: 'flashMessage', value: 'user was successfully created'})
+            }
         } catch (e) {
-            console.log('there was an error')
+            appDispatch({type: 'flashMessage', value: 'there was an error'})
         }
     }
     return (

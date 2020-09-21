@@ -18,6 +18,8 @@ import ViewSinglePost from "./Components/ViewSinglePost"
 import FlashMessages from "./Components/FlashMessages"
 import Profile from "./Components/Profile"
 import EditPost from "./Components/EditPost"
+import NotFound from "./Components/NotFound"
+import Search from "./Components/Search"
 
 
 Axios.defaults.baseURL = 'http://localhost:8080'
@@ -30,7 +32,8 @@ function App() {
             token: localStorage.getItem('complexAppToken'),
             username: localStorage.getItem('complexAppUsername'),
             avatar: localStorage.getItem('complexAppAvatar')
-        }
+        },
+        isSearchOpen: false
     }
 
     const ourReducer = (draft, action) => {
@@ -44,6 +47,12 @@ function App() {
                 return
             case 'flashMessage':
                 draft.flashMessages.push(action.value)
+                return
+            case 'openSearch':
+                draft.isSearchOpen = true
+                return
+            case 'closeSearch':
+                draft.isSearchOpen = false
                 return
         }
     }
@@ -88,8 +97,14 @@ function App() {
                         <Route exact path={'/post/:id/edit'} render={props => <EditPost {...props} />}/>
 
 
+                        <Route render={props => <NotFound {...props} />}/>
+
+
                     </Switch>
 
+                    {
+                        state.isSearchOpen ? <Search/> : ''
+                    }
                     <Footer/>
 
                 </BrowserRouter>

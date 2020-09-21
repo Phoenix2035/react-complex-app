@@ -1,10 +1,11 @@
 import React, {useContext} from 'react'
-import {Link} from "react-router-dom"
+import {Link, useHistory} from "react-router-dom"
 import DispatchContext from "../Context/DispatchContext"
 import StateContext from "../Context/StateContext"
 
 
 function HeaderLoggedIn() {
+    const history = useHistory()
 
     const appDispatch = useContext(DispatchContext)
     const appState = useContext(StateContext)
@@ -14,11 +15,16 @@ function HeaderLoggedIn() {
         localStorage.removeItem('complexAppToken')
         localStorage.removeItem('complexAppUsername')
         localStorage.removeItem('complexAppAvatar')
+        history.push('/')
+    }
+
+    const handleSearchIcon = () => {
+        appDispatch({type: 'openSearch'})
     }
 
     return (
         <div className="flex-row my-3 my-md-0">
-            <a href="#" className="text-white mr-2 header-search-icon">
+            <a onClick={handleSearchIcon} href="#" className="text-white mr-2 header-search-icon">
                 <i className="fas fa-search"/>
             </a>
             <span className="mr-2 header-chat-icon text-white">
