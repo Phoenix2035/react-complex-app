@@ -47,8 +47,7 @@ function ProfilePosts() {
                             <span className="text-muted small">on {dateFormatted} </span>
                         </Link>
                     )
-                })
-            }
+                })}
 
         </div>
     );

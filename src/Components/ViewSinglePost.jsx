@@ -34,11 +34,10 @@ function ViewSinglePost() {
         }
 
         fetchPost()
-
         return () => {
             ourRequest.cancel()
         }
-    }, [])
+    }, [id])
 
     if (!isLoading && !post) {
         return (
