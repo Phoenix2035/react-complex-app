@@ -25,13 +25,15 @@ function HeaderLoggedIn() {
 
     return (
         <div className="flex-row my-3 my-md-0">
-            <a data-for='search' data-tip='Search' onClick={handleSearchIcon} href="#" className="text-white mr-3 header-search-icon">
+            <a data-for='search' data-tip='Search' onClick={handleSearchIcon} href="#"
+               className="text-white mr-3 header-search-icon">
                 <i className="fas fa-search"/>
             </a>
             <ReactTooltip place='bottom' id='search' className='custom-tooltip'/>
 
-            <span data-for='chat' data-tip='Chat' className="mr-3 header-chat-icon text-white">
-            <i className="fas fa-comment"/>
+            <span onClick={() => appDispatch({type: 'toggleChat'})} data-for='chat' data-tip='Chat'
+                  className="mr-3 header-chat-icon text-white">
+              <i className="fas fa-comment"/>
             <span className="chat-count-badge text-white"> </span>
           </span>
             <ReactTooltip place='bottom' id='chat' className='custom-tooltip'/>
