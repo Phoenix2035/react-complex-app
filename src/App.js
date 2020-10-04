@@ -28,7 +28,7 @@ const ViewSinglePost = React.lazy(() => import("./Components/ViewSinglePost"))
 const Search = React.lazy(() => import("./Components/Search"))
 const Chat = React.lazy(() => import("./Components/Chat"))
 
-Axios.defaults.baseURL = process.env.BACKENDURL || "https://masturdating.herokuapp.com"
+Axios.defaults.baseURL = "http://localhost:8080"
 
 
 function App() {

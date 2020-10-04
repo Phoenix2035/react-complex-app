@@ -27,7 +27,7 @@ function Chat() {
 
 
     useEffect(() => {
-        socket.current = io(process.env.BACKENDURL || "https://masturdating.herokuapp.com")
+        socket.current = io("http://localhost:8080")
 
         socket.current.on("chatFromServer", (message) => {
             setState(draft => {
