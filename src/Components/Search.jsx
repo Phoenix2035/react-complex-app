@@ -2,7 +2,6 @@ import React, {useContext, useEffect} from 'react'
 import DispatchContext from "../Context/DispatchContext"
 import {useImmer} from "use-immer"
 import Axios from "axios"
-import {Link} from "react-router-dom"
 import Post from "./Post";
 
 
@@ -82,7 +81,7 @@ function Search() {
 
 
     return (
-        <div className="search-overlay">
+        <>
             <div className="search-overlay-top shadow-sm">
                 <div className="container container--narrow">
                     <label htmlFor="live-search-field" className="search-overlay-icon">
@@ -112,7 +111,8 @@ function Search() {
 
                                     {
                                         state.results.map(post => {
-                                            return <Post post={post} key={post._id} onClick={()=> appDispatch({type:'closeSearch'})}/>
+                                            return <Post post={post} key={post._id}
+                                                         onClick={() => appDispatch({type: 'closeSearch'})}/>
                                         })
                                     }
                                 </div>
@@ -125,7 +125,7 @@ function Search() {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

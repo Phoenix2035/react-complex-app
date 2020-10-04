@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react"
 
 function LoadingDotsIcon() {
     return (
@@ -7,7 +7,7 @@ function LoadingDotsIcon() {
 
             </div>
         </div>
-    );
+    )
 }
 
-export default LoadingDotsIcon;
+export default LoadingDotsIcon

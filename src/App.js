@@ -1,29 +1,35 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, Suspense} from 'react'
 import {useImmerReducer} from "use-immer"
 import {BrowserRouter, Switch, Route} from "react-router-dom"
 import {CSSTransition} from "react-transition-group"
 import Axios from "axios"
 
+
 import StateContext from "./Context/StateContext"
 import DispatchContext from "./Context/DispatchContext"
 
 // My Components
+import LoadingDotsIcon from "./Components/LoadingDotsIcon"
 import Header from "./Components/Header"
 import HomeGuest from "./Components/HomeGuest"
 import Home from "./Components/Home"
 import Footer from "./Components/Footer"
 import About from "./Components/About"
 import Terms from "./Components/Terms"
-import CreatePost from "./Components/CreatePost"
-import ViewSinglePost from "./Components/ViewSinglePost"
+
 import FlashMessages from "./Components/FlashMessages"
 import Profile from "./Components/Profile"
 import EditPost from "./Components/EditPost"
 import NotFound from "./Components/NotFound"
-import Search from "./Components/Search"
-import Chat from "./Components/Chat";
 
-Axios.defaults.baseURL = 'http://localhost:8080'
+
+const CreatePost = React.lazy(() => import("./Components/CreatePost"))
+const ViewSinglePost = React.lazy(() => import("./Components/ViewSinglePost"))
+const Search = React.lazy(() => import("./Components/Search"))
+const Chat = React.lazy(() => import("./Components/Chat"))
+
+Axios.defaults.baseURL = process.env.BACKENDURL || "https://masturdating.herokuapp.com"
+
 
 function App() {
     const initialState = {
@@ -86,46 +92,80 @@ function App() {
         }
     }, [state.loggedIn])
 
+
+    // check if token has expired or not on first render
+    useEffect(() => {
+        if (state.loggedIn) {
+            const ourRequest = Axios.CancelToken.source()
+
+            async function fetchResults() {
+                try {
+                    const response = await Axios.post('/checkToken', {token: state.user.token}, {cancelToken: ourRequest.token})
+                    if (!response.data) {
+                        dispatch({type: 'logout'})
+                        dispatch({type: 'flashMessage', value: 'Your session has expired, Please login again.'})
+                    }
+                } catch (err) {
+                    console.log("There was a problem or the request was cancelled.")
+                }
+            }
+
+            fetchResults()
+
+            return () => {
+                ourRequest.cancel()
+            }
+        }
+    }, [])
+
     return (
         <StateContext.Provider value={state}>
             <DispatchContext.Provider value={dispatch}>
                 <BrowserRouter>
                     <FlashMessages messages={state.flashMessages}/>
                     <Header/>
-                    <Switch>
-                        <Route path={'/profile/:username'} render={props => <Profile {...props} />}/>
+                    <Suspense fallback={<LoadingDotsIcon/>}>
+                        <Switch>
+                            <Route path={'/profile/:username'} render={props => <Profile {...props} />}/>
 
-                        <Route exact path={'/'}>
-                            {
-                                state.loggedIn ? <Home/> : <HomeGuest/>
-                            }
-                        </Route>
+                            <Route exact path={'/'}>
+                                {
+                                    state.loggedIn ? <Home/> : <HomeGuest/>
+                                }
+                            </Route>
 
-                        <Route path={'/about-us'} render={props => <About {...props} />}/>
+                            <Route path={'/about-us'} render={props => <About {...props} />}/>
 
-                        <Route path={'/terms'} render={props => <Terms {...props} />}/>
+                            <Route path={'/terms'} render={props => <Terms {...props} />}/>
 
-                        <Route path={'/create-post'} render={props => <CreatePost {...props} />}/>
+                            <Route path={'/create-post'} render={props => <CreatePost {...props} />}/>
 
-                        <Route exact path={'/post/:id'} render={props => <ViewSinglePost {...props} />}/>
+                            <Route exact path={'/post/:id'} render={props => <ViewSinglePost {...props} />}/>
 
-                        <Route exact path={'/post/:id/edit'} render={props => <EditPost {...props} />}/>
-
-
-                        <Route render={props => <NotFound {...props} />}/>
+                            <Route exact path={'/post/:id/edit'} render={props => <EditPost {...props} />}/>
 
 
-                    </Switch>
+                            <Route render={props => <NotFound {...props} />}/>
+
+
+                        </Switch>
+                    </Suspense>
 
                     <CSSTransition
                         timeout={330}
                         in={state.isSearchOpen}
                         classNames="search-overlay"
                         unmountOnExit>
-                        <Search/>
+                        <div className="search-overlay">
+                            <Suspense fallback=''>
+                                <Search/>
+                            </Suspense>
+                        </div>
                     </CSSTransition>
 
-                    <Chat/>
+                    <Suspense fallback=''>
+                        {state.loggedIn && <Chat/>}
+                    </Suspense>
 
                     <Footer/>
 

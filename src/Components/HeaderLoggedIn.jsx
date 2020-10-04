@@ -13,9 +13,7 @@ function HeaderLoggedIn() {
 
     const handleLogout = () => {
         appDispatch({type: 'logout'})
-        localStorage.removeItem('complexAppToken')
-        localStorage.removeItem('complexAppUsername')
-        localStorage.removeItem('complexAppAvatar')
+        appDispatch({type: 'flashMessage', value: 'You have successfully logged out.'})
         history.push('/')
     }
 
